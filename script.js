@@ -4,6 +4,9 @@ const gameBoard = document.getElementById('gameBoard');
 const startBtn = document.getElementById('startBtn');
 const timerDisplay = document.getElementById('timerDisplay');
 const gameAudio = document.getElementById('gameAudio');
+const leaderboard = document.getElementById('leaderboard');
+const leaderboardList = document.getElementById('leaderboardList');
+const clearLeaderboardBtn = document.getElementById('clearLeaderboardBtn');
 
 let firstCard = null;
 let secondCard = null;
@@ -12,6 +15,45 @@ let gameActive = false;
 let timerInterval = null;
 let elapsedTime = 0;
 let matchedPairs = 0;
+
+function getHighScores() {
+  const scores = localStorage.getItem('memoryGameScores');
+  return scores ? JSON.parse(scores) : [];
+}
+
+function saveHighScore(time) {
+  const scores = getHighScores();
+  scores.push(time);
+  scores.sort((a, b) => a - b);
+  const topScores = scores.slice(0, 10);
+  localStorage.setItem('memoryGameScores', JSON.stringify(topScores));
+}
+
+function displayLeaderboard() {
+  const scores = getHighScores();
+  leaderboardList.innerHTML = '';
+  
+  if (scores.length === 0) {
+    leaderboardList.innerHTML = '<li>No scores yet. Play to get on the board!</li>';
+  } else {
+    scores.forEach((score) => {
+      const li = document.createElement('li');
+      li.textContent = `${(score / 1000).toFixed(2)}s`;
+      leaderboardList.appendChild(li);
+    });
+  }
+  
+  leaderboard.classList.remove('hidden');
+}
+
+function clearLeaderboardScores() {
+  if (confirm('Are you sure you want to clear all high scores?')) {
+    localStorage.removeItem('memoryGameScores');
+    displayLeaderboard();
+  }
+}
+
+clearLeaderboardBtn.addEventListener('click', clearLeaderboardScores);
 
 function shuffleCards(array) {
   const shuffled = [...array];
@@ -123,6 +165,7 @@ function resetBoard() {
 
 function startGame() {
 
+  leaderboard.classList.add('hidden');
   gameBoard.innerHTML = '';
   firstCard = null;
   secondCard = null;
@@ -157,6 +200,9 @@ function endGame() {
 
   gameAudio.pause();
   gameAudio.currentTime = 0;
+
+  saveHighScore(elapsedTime);
+  displayLeaderboard();
 
   startBtn.textContent = `Play Again (${(elapsedTime / 1000).toFixed(2)}s)`;
   startBtn.disabled = false;
