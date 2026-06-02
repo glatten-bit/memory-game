@@ -1,0 +1,80 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #111827;
+  color: white;
+  text-align: center;
+  margin: 0;
+  padding: 20px;
+}
+
+h1 {
+  margin-bottom: 30px;
+}
+
+.game-board {
+  display: grid;
+  grid-template-columns: repeat(5, 140px);
+  gap: 15px;
+  justify-content: center;
+  perspective: 1000px;
+}
+
+.card {
+  width: 140px;
+  height: 180px;
+  background: white;
+  border-radius: 12px;
+  cursor: pointer;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.4s;
+}
+
+.card.flip {
+  transform: rotateY(180deg);
+}
+
+.card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.front,
+.back {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.4s;
+}
+
+.front {
+  background: #4f46e5 url('../images/memorychallengeback.png') center/contain no-repeat;
+  z-index: 2;
+  transform: rotateY(0deg);
+}
+
+.back {
+  transform: rotateY(180deg);
+  background: white;
+  z-index: 1;
+}
+
+.card.flip .front {
+  z-index: 1;
+}
+
+.card.flip .back {
+  z-index: 2;
+}
+
+.back img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
