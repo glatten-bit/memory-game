@@ -4,30 +4,36 @@ body {
   color: white;
   text-align: center;
   margin: 0;
-  padding: 20px;
+  padding: 10px;
 }
 
 h1 {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
+  font-size: clamp(1.5rem, 5vw, 2.5rem);
 }
 
 .game-board {
   display: grid;
-  grid-template-columns: repeat(5, 140px);
-  gap: 15px;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 8px;
   justify-content: center;
   perspective: 1000px;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 10px;
 }
 
 .card {
-  width: 140px;
-  height: 180px;
+  aspect-ratio: 140/180;
+  width: 100%;
+  max-width: 140px;
   background: white;
   border-radius: 12px;
   cursor: pointer;
   position: relative;
   transform-style: preserve-3d;
   transition: transform 0.4s;
+  touch-action: manipulation;
 }
 
 .card.flip {
@@ -77,4 +83,41 @@ h1 {
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+/* Mobile-first responsive design */
+@media (max-width: 480px) {
+  body {
+    padding: 8px;
+  }
+
+  h1 {
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+  }
+
+  .game-board {
+    grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+    gap: 6px;
+    max-width: 100%;
+  }
+
+  .card {
+    max-width: 100%;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .game-board {
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    gap: 10px;
+    max-width: 100%;
+  }
+}
+
+@media (min-width: 769px) {
+  .game-board {
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    gap: 15px;
+  }
 }
