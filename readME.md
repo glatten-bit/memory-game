@@ -5,3 +5,4 @@ This is a in progress development of a Memory Game for Mecklenburg Community Chu
 - [ ] Working Demo on Mobile
 - [ ] Timer
 - [ ] Leaderboard
+- [ ] Idea
